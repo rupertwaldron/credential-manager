@@ -26,6 +26,14 @@ public class GenericEncryptionService<T> implements IEncryptionService<T> {
     @Value("${encryption.algorithm}")
     private String algorithm;
 
+    public GenericEncryptionService(String key, String algorithm) {
+        this.key = key;
+        this.algorithm = algorithm;
+    }
+
+    public GenericEncryptionService() {
+    }
+
     @Override
     public T encrypt(T data) {
         Field[] fields = data.getClass().getDeclaredFields();
