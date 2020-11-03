@@ -1,5 +1,6 @@
 package com.ruppyrup.credentialmanager.model;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "users")
+@AllArgsConstructor
 public class DAOUser {
 
     @Id

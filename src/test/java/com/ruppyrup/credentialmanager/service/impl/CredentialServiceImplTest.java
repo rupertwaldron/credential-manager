@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DirtiesContext
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 class CredentialServiceImplTest {
 
     private UserDTO user1 = new UserDTO("javainuse", "javainuse");
@@ -82,13 +84,13 @@ class CredentialServiceImplTest {
         credentialService.getAllCredentials().forEach(System.out::println);
     }
 
-    @AfterEach
-    void cleanUp() {
-        credentialDao.deleteAll();
-        userDetailsService.deleteUser(user1);
-        userDetailsService.deleteUser(user2);
-        userDetailsService.deleteUser(user3);
-    }
+//    @AfterEach
+//    void cleanUp() {
+//        credentialDao.deleteAll();
+//        userDetailsService.deleteUser(user1);
+//        userDetailsService.deleteUser(user2);
+//        userDetailsService.deleteUser(user3);
+//    }
 
     @Test
     void getAllCredentials() {

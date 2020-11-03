@@ -12,6 +12,8 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -59,6 +61,7 @@ public class CredentialServiceImpl implements CredentialService {
     }
 
     @Override
+    @Transactional
     public Credential createCredential(CredentialDTO credentialDto) {
         DAOUser authorizedUser = userService.getUser(jwtContextManager.getAuthorizedUser());
         Credential credential = new Credential(credentialDto);
@@ -68,16 +71,19 @@ public class CredentialServiceImpl implements CredentialService {
     }
 
     @Override
+    @Transactional
     public Credential updateCredential(String uuid, CredentialDTO credentialDTO) throws CredentialNotFoundException {
         Credential credentialToUpdate = encryptionService.decrypt(getAuthorizedCredential(uuid));
         credentialToUpdate.setUrl(credentialDTO.getUrl());
         credentialToUpdate.setLogin(credentialDTO.getLogin());
         credentialToUpdate.setCredentialName(credentialDTO.getCredentialName());
         credentialToUpdate.setPassword(credentialDTO.getPassword());
-        return credentialDao.save(encryptionService.encrypt(credentialToUpdate));
+        return encryptionService.encrypt(credentialToUpdate);
+//        return credentialDao.save(encryptionService.encrypt(credentialToUpdate));
     }
 
     @Override
+    @Transactional
     public Credential deleteCredential(String uuid) throws CredentialNotFoundException {
         Credential credentialToDelete = getAuthorizedCredential(uuid);
         if (credentialToDelete == null) return null;
